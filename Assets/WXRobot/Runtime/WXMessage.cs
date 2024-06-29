@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -43,6 +42,7 @@ namespace WXRobot.Runtime
     [Serializable]
     public class WxTextMessage : WxMessage
     {
+        [Serializable]
         public class HttpMessage
         {
             public string content;

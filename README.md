@@ -24,7 +24,6 @@ sb.AppendLine("<font color=\"blue\">颜色文本</font>");
 sb.AppendLine("<font color=\"info\">企业微信内置颜色</font>");
 sb.AppendLine("<font color=\"comment\">企业微信内置颜色</font>");
 sb.AppendLine("<font color=\"warning\">企业微信内置颜色</font>");
-
 var message = new WxMarkdownMessage();
 message.markdown.content = sb.ToString();
 var result = await message.PostAsync(WebHookUrl);

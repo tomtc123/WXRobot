@@ -18,7 +18,7 @@ namespace WXRobot.Tests.Editor
         {
             var message = new WxTextMessage();
             message.text.content = "Hello Robot!";
-            message.text.mentioned_list.Add("@all");
+            message.text.mentioned_mobile_list.Add("@all");
             Task.Run(async () =>
             {
                 var result = await message.PostAsync(WebHookUrl);
@@ -49,8 +49,8 @@ namespace WXRobot.Tests.Editor
         [Test]
         public void PostImage()
         {
-            const int width = 256;
-            const int height = 256;
+            const int width = 128;
+            const int height = 128;
             var r = 1f / width;
             var g = 1f / height;
             var colors = new List<Color>();
@@ -62,10 +62,11 @@ namespace WXRobot.Tests.Editor
                 }
             }
 
-            
             var texture = new Texture2D(width, height);
             texture.SetPixels(colors.ToArray());
             texture.Apply();
+            File.WriteAllBytes($"{Application.dataPath}/test.png", texture.EncodeToPNG());
+            
             var message = new WxImageMessage(texture);
             Task.Run(async () =>
             {
