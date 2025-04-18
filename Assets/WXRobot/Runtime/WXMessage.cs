@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace WXRobot.Runtime
 {
+    /// <summary>
+    /// https://developer.work.weixin.qq.com/document/path/91770
+    /// </summary>
     public abstract class WxMessage
     {
         public abstract WxMessageType MessageType { get; }
@@ -43,7 +46,7 @@ namespace WXRobot.Runtime
     public class WxTextMessage : WxMessage
     {
         [Serializable]
-        public class HttpMessage
+        private class MessageInfo
         {
             public string content;
             public List<string> mentioned_list = new();
@@ -51,34 +54,65 @@ namespace WXRobot.Runtime
         }
 
         public override WxMessageType MessageType => WxMessageType.Text;
-        public HttpMessage text = new();
+
+        [SerializeField] private MessageInfo text = new();
+
+        public WxTextMessage(string content)
+        {
+            text.content = content;
+        }
+
+        public void AddMentionedUser(string userid)
+        {
+            text.mentioned_list.Add(userid);
+        }
+
+        public void AddMentionedUsers(string[] users)
+        {
+            text.mentioned_list.AddRange(users);
+        }
+
+        public void AddMentionedMobile(string mobile)
+        {
+            text.mentioned_mobile_list.Add(mobile);
+        }
+
+        public void AddMentionedMobiles(string[] mobiles)
+        {
+            text.mentioned_mobile_list.AddRange(mobiles);
+        }
     }
 
     [Serializable]
     public class WxMarkdownMessage : WxMessage
     {
         [Serializable]
-        public class HttpMessage
+        private class MessageInfo
         {
             public string content;
         }
 
         public override WxMessageType MessageType => WxMessageType.Markdown;
-        public HttpMessage markdown = new();
+        [SerializeField] private MessageInfo markdown = new();
+
+        public WxMarkdownMessage(string content)
+        {
+            markdown.content = content;
+        }
     }
 
     [Serializable]
     public class WxImageMessage : WxMessage
     {
         [Serializable]
-        public class HttpMessage
+        private class MessageInfo
         {
             public string base64;
             public string md5;
         }
 
         public override WxMessageType MessageType => WxMessageType.Image;
-        public HttpMessage image = new();
+        [SerializeField] private MessageInfo image = new();
 
         public WxImageMessage(Texture2D texture)
         {
@@ -92,6 +126,12 @@ namespace WXRobot.Runtime
     public class WxNewsMessage : WxMessage
     {
         [Serializable]
+        private class MessageInfo
+        {
+            public List<Article> articles = new();
+        }
+
+        [Serializable]
         public class Article
         {
             public string title;
@@ -100,13 +140,12 @@ namespace WXRobot.Runtime
             public string picurl;
         }
 
-        [Serializable]
-        public class HttpMessage
-        {
-            public List<Article> articles = new();
-        }
-
         public override WxMessageType MessageType => WxMessageType.News;
-        public HttpMessage news = new();
+        [SerializeField] private MessageInfo news = new();
+
+        public void AddArticle(Article article)
+        {
+            news.articles.Add(article);
+        }
     }
 }

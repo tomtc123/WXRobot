@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine;
 using WXRobot.Runtime;
@@ -10,20 +9,13 @@ namespace WXRobot.Tests.Editor
 {
     public class WxMessageTests
     {
-        public const string WebHookUrl =
-            "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=693a91f6-7xxx-4bc4-97a0-0ec2sifa5aaa";
+        private const string WebHookUrl =
+            "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=693axxx6-7aoc-4bc4-97a0-0ec2sifa5aaa";
 
         [Test]
         public void PostPlainText()
         {
-            var message = new WxTextMessage();
-            message.text.content = "Hello Robot!";
-            message.text.mentioned_mobile_list.Add("@all");
-            Task.Run(async () =>
-            {
-                var result = await message.PostAsync(WebHookUrl);
-                Debug.Log(result);
-            });
+            WxRobotHelper.PostText(WebHookUrl, "Hello Robot!", "@all");
         }
 
         [Test]
@@ -36,14 +28,7 @@ namespace WXRobot.Tests.Editor
             sb.AppendLine("<font color=\"info\">企业微信内置颜色</font>");
             sb.AppendLine("<font color=\"comment\">企业微信内置颜色</font>");
             sb.AppendLine("<font color=\"warning\">企业微信内置颜色</font>");
-
-            var message = new WxMarkdownMessage();
-            message.markdown.content = sb.ToString();
-            Task.Run(async () =>
-            {
-                var result = await message.PostAsync(WebHookUrl);
-                Debug.Log(result);
-            });
+            WxRobotHelper.PostMarkdown(WebHookUrl, sb.ToString());
         }
 
         [Test]
@@ -66,13 +51,7 @@ namespace WXRobot.Tests.Editor
             texture.SetPixels(colors.ToArray());
             texture.Apply();
             File.WriteAllBytes($"{Application.dataPath}/test.png", texture.EncodeToPNG());
-            
-            var message = new WxImageMessage(texture);
-            Task.Run(async () =>
-            {
-                var result = await message.PostAsync(WebHookUrl);
-                Debug.Log(result);
-            });
+            WxRobotHelper.PostImage(WebHookUrl, texture);
         }
     }
 }
