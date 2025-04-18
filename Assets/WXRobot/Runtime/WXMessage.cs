@@ -12,7 +12,7 @@ namespace WXRobot.Runtime
     /// </summary>
     public abstract class WxMessage
     {
-        public abstract WxMessageType MessageType { get; }
+        protected abstract WxMessageType MessageType { get; }
         public string msgtype;
 
         private string ToJson()
@@ -53,7 +53,7 @@ namespace WXRobot.Runtime
             public List<string> mentioned_mobile_list = new();
         }
 
-        public override WxMessageType MessageType => WxMessageType.Text;
+        protected override WxMessageType MessageType => WxMessageType.Text;
 
         [SerializeField] private MessageInfo text = new();
 
@@ -92,7 +92,7 @@ namespace WXRobot.Runtime
             public string content;
         }
 
-        public override WxMessageType MessageType => WxMessageType.Markdown;
+        protected override WxMessageType MessageType => WxMessageType.Markdown;
         [SerializeField] private MessageInfo markdown = new();
 
         public WxMarkdownMessage(string content)
@@ -111,7 +111,7 @@ namespace WXRobot.Runtime
             public string md5;
         }
 
-        public override WxMessageType MessageType => WxMessageType.Image;
+        protected override WxMessageType MessageType => WxMessageType.Image;
         [SerializeField] private MessageInfo image = new();
 
         public WxImageMessage(Texture2D texture)
@@ -140,7 +140,7 @@ namespace WXRobot.Runtime
             public string picurl;
         }
 
-        public override WxMessageType MessageType => WxMessageType.News;
+        protected override WxMessageType MessageType => WxMessageType.News;
         [SerializeField] private MessageInfo news = new();
 
         public void AddArticle(Article article)
